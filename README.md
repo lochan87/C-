@@ -13,7 +13,7 @@ This repo contains a collection of simple and beginner-friendly C# programs I wr
 
 ---
 
-## Contents
+## 📂 Contents
 
 - Basic Calculator using switch statement
 - Calculator App using functions and OOP
