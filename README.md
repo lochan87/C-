@@ -19,6 +19,11 @@ This repo contains a collection of simple and beginner-friendly C# programs I wr
 - Calculator App using functions and OOP
 - Palindrome checker (string and number)
 - Convertor (used to convert temperatures and distances)
+- Random Number Generator
+- File Reader
+- GPA Calculator
+- Employee Management System
+- Banking System
 - And more as I learn...
 
 ---
