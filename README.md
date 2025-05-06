@@ -15,8 +15,8 @@ This repo contains a collection of simple and beginner-friendly C# programs I wr
 
 ## 📂 Contents
 
-- Basic Calculator using switch statement
-- Calculator App using functions and OOP
+- Basic Calculator (using switch statement)
+- Calculator App (using functions and OOP)
 - Palindrome checker (string and number)
 - Convertor (used to convert temperatures and distances)
 - Random Number Generator
@@ -24,6 +24,8 @@ This repo contains a collection of simple and beginner-friendly C# programs I wr
 - GPA Calculator
 - Employee Management System
 - Banking System
+- Moblie Store
+- Mail Assigner
 - And more as I learn...
 
 ---
