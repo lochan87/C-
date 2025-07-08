@@ -1,0 +1,82 @@
+@page "/view-tasks"
+@inject HttpClient Http
+@inject NavigationManager Nav
+@using TodoApp.Shared
+
+<h3>All Tasks</h3>
+
+@if (tasks == null)
+{
+    <p><em>Loading tasks...</em></p>
+}
+else if (tasks.Count == 0)
+{
+    <p>No tasks found.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="table-light text-center">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Temporary Deadline</th>
+                <th>Actual Deadline</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in tasks)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.TemporaryDeadline.ToShortDateString()</td>
+                    <td>@item.ActualDeadline.ToShortDateString()</td>
+                    <td>@(item.IsCompleted ? "✅ Completed" : "❌ Pending")</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-success me-1" @onclick="() => ToggleCompletion(item.Id)">
+                                @(item.IsCompleted ? "↩️ Not-Done" : "✔ Done")
+                            </button>
+                            <NavLink class="btn btn-sm btn-warning me-1" href="@($"/add-task/{item.Id}")">✏️ Edit</NavLink>
+                            <button class="btn btn-sm btn-danger" @onclick="() => DeleteTask(item.Id)">🗑 Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<TodoItem>? tasks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTasks();
+    }
+
+    async Task LoadTasks()
+    {
+        tasks = await Http.GetFromJsonAsync<List<TodoItem>>("api/todo");
+    }
+
+    async Task DeleteTask(string id)
+    {
+        await Http.DeleteAsync($"api/todo/{id}");
+        await LoadTasks();
+    }
+
+    async Task ToggleCompletion(string id)
+    {
+        var item = tasks?.FirstOrDefault(t => t.Id == id);
+        if (item != null)
+        {
+            item.IsCompleted = !item.IsCompleted;
+            await Http.PutAsJsonAsync($"api/todo/{id}", item);
+            await LoadTasks();
+        }
+    }
+}
