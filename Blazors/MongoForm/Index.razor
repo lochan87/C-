@@ -1,0 +1,47 @@
+@page "/"
+@using MongoForm.Models
+@using MongoForm.Services
+@inject MongoForm.Services.MongoService MongoService
+
+<h3>Submit your info</h3>
+
+<EditForm Model="submission" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Name:</label>
+        <InputText @bind-Value="submission.Name" class="form-control" @oninput="ClearMessage"/>
+        <ValidationMessage For="@(() => submission.Name)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email:</label>
+        <InputText @bind-Value="submission.Email" class="form-control" @oninput="ClearMessage" />
+        <ValidationMessage For="@(() => submission.Email)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button><br>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <p>@message</p>
+}
+
+@code {
+    private UserSubmission submission = new();
+    private string message = "";
+
+    private async Task HandleValidSubmit()
+    {
+        await MongoService.InsertSubmission(submission);
+        message = "Submission saved!";
+        submission = new(); // Clear form
+    }
+
+    private void ClearMessage(ChangeEventArgs e)
+    {
+        message = "";
+    }
+}
